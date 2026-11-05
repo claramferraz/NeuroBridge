@@ -417,9 +417,9 @@ else:
                             alertas.append("Apoio motor: verificar como preservar a habilidade específica avaliada.")
                         elif numero == 5 and "Leitura autônoma" in essenciais:
                             alertas.append("Leitura em voz: revisar porque a leitura autônoma integra o objetivo.")
-                        elif numero == 6 and "Expressão oral perante público" em essenciais:
+                        elif numero == 6 and "Expressão oral perante público" in essenciais:
                             alertas.append("CAA: discutir a forma de produzir evidência do objetivo sem retirar o meio de comunicação necessário.")
-                if registro[8] == 2 and "Leitura autônoma" em essenciais:
+                if registro[8] == 2 and "Leitura autônoma" in essenciais:
                     alertas.append("Áudio como acesso: verificar se não substitui a leitura autônoma que está sendo avaliada.")
                 if registro[7] == 3 and registro[9] in [4, 5]:
                     plano = plano + "As escolhas de formato e de caminho são guiadas pela mesma meta; não representam redução da exigência.\n"
