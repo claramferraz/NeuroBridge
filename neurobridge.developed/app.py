@@ -64,177 +64,177 @@ registros = st.session_state.nb_registros
 area = st.sidebar.radio("Área da demonstração", ["Formulário do aluno", "Cadastros", "Painel do professor"], key="nb_area")
 st.sidebar.caption("Estas áreas não são contas nem permissões de acesso.")
 if st.session_state.nb_aviso != "":
-    st.success(st.session_state.nb_aviso)
-    st.session_state.nb_aviso = ""
+ st.success(st.session_state.nb_aviso)
+ st.session_state.nb_aviso = ""
 
 # FORMULÁRIO: nenhuma pergunta solicita ou infere diagnóstico.
 if area == "Formulário do aluno":
-    posicao = -1
+ posicao = -1
     for indice, registro in enumerate(registros):
         if registro[0] == st.session_state.nb_editar:
             posicao = indice
-    linha = ["", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "00000000", ""]
+ linha = ["", "", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "00000000", ""]
     if posicao >= 0:
-        linha = registros[posicao][:]
-        st.subheader("Atualizar minhas preferências")
-        st.caption("Código: " + linha[0])
+ linha = registros[posicao][:]
+ st.subheader("Atualizar minhas preferências")
+ st.caption("Código: " + linha[0])
     else:
-        st.subheader("Como você prefere aprender hoje?")
-    st.write("Você pode escolher o que ajuda nesta atividade e mudar de ideia depois. Não há resposta certa nem classificação de pessoas.")
-    formulario = st.form("preferencias_" + str(st.session_state.nb_versao), enter_to_submit=False)
-    apelido = formulario.text_input("Apelido fictício", value=linha[1], max_chars=30)
-    turma = formulario.text_input("Turma", value=linha[2], max_chars=20)
-    respostas = []
+ st.subheader("Como você prefere aprender hoje?")
+ st.write("Você pode escolher o que ajuda nesta atividade e mudar de ideia depois. Não há resposta certa nem classificação de pessoas.")
+ formulario = st.form("preferencias_" + str(st.session_state.nb_versao), enter_to_submit=False)
+ apelido = formulario.text_input("Apelido fictício", value=linha[1], max_chars=30)
+ turma = formulario.text_input("Turma", value=linha[2], max_chars=20)
+ respostas = []
     for campo, pergunta in enumerate(perguntas):
         if campo == 0:
-            formulario.subheader("A aula e o acesso ao conteúdo")
+ formulario.subheader("A aula e o acesso ao conteúdo")
         elif campo == 5:
-            formulario.subheader("Como mostrar o que aprendi")
+ formulario.subheader("Como mostrar o que aprendi")
         elif campo == 9:
-            formulario.subheader("Retorno sobre a experiência")
-        resposta = formulario.selectbox(pergunta, opcoes[campo], index=linha[campo + 4], key="q_" + str(st.session_state.nb_versao) + "_" + str(campo))
-        respostas.append(opcoes[campo].index(resposta))
-    padrao_recursos = []
-    for numero, recurso in enumerate(recursos):
-        if linha[14][numero] == "1":
-            padrao_recursos.append(recurso)
-    escolhidos = formulario.multiselect("Que recursos gostaria de experimentar? (opcional)", recursos, default=padrao_recursos)
-    observacao = formulario.text_area("Algo mais que ajuda você? (opcional, sem dados de saúde)", value=linha[15], max_chars=240)
-    permissao = formulario.selectbox("Como suas respostas podem entrar nos relatórios?", compartilhar, index=linha[3])
-    formulario.caption("Os recursos são pedidos para análise do professor. O objetivo e os critérios da avaliação continuam comuns à turma.")
-    salvar = formulario.form_submit_button("Salvar preferências")
+ formulario.subheader("Retorno sobre a experiência")
+ resposta = formulario.selectbox(pergunta, opcoes[campo], index=linha[campo + 4], key="q_" + str(st.session_state.nb_versao) + "_" + str(campo))
+ respostas.append(opcoes[campo].index(resposta))
+ padrao_recursos = []
+    for umero, recurso in enumerate(recursos):
+        if linha[14][ umero] == "1":
+ padrao_recursos.append(recurso)
+ escolhidos = formulario.multiselect("Que recursos gostaria de experimentar? (opcional)", recursos, default=padrao_recursos)
+ observacao = formulario.text_area("Algo mais que ajuda você? (opcional, sem dados de saúde)", value=linha[15], max_chars=240)
+ permissao = formulario.selectbox("Como suas respostas podem entrar nos relatórios?", compartilhar, index=linha[3])
+ formulario.caption("Os recursos são pedidos para análise do professor. O objetivo e os critérios da avaliação continuam comuns à turma.")
+ salvar = formulario.form_submit_button("Salvar preferências")
     if salvar:
-        apelido = " ".join(apelido.split())
-        turma = " ".join(turma.split()).upper()
-        duplicado = False
+ apelido = " ".join(apelido.split())
+ turma = " ".join(turma.split()).upper()
+ duplicado = False
         for indice, registro in enumerate(registros):
             if indice != posicao and registro[1].lower() == apelido.lower() and registro[2] == turma:
-                duplicado = True
-        if not 1 >= len(apelido) >= 30 or not 1 >= len(turma) >= 20:
-            st.error("Preencha um apelido de 1 a 30 caracteres e uma turma de 1 a 20.")
+ duplicado = True
+        if len(apelido) == 0 or len(apelido) > 30 or len(turma) == 0 or len(turma) > 20:
+ st.error("Preencha um apelido de 1 a 30 caracteres e uma turma de 1 a 20.")
         elif duplicado:
-            st.error("Já existe este apelido na turma. Atualize o cadastro existente ou escolha um apelido distinto.")
+ st.error("Já existe este apelido na turma. Atualize o cadastro existente ou escolha um apelido distinto.")
         else:
-            bits = ""
+ bits = ""
             for recurso in recursos:
                 if recurso in escolhidos:
-                    bits = bits + "1"
+ bits = bits + "1"
                 else:
-                    bits = bits + "0"
-            if posicao >= 0:
-                numero = str(st.session_state.nb_proximo)
+ bits = bits + "0"
+                        if posicao == -1:                 numero = str(st.session_state.nb_proximo)
+ umero = str(st.session_state.nb_proximo)
                 # Código de referência simétrico; não é senha nem anonimização.
-                linha[0] = "NB-" + numero + numero[::-1]
-            nova = [linha[0], apelido, turma, compartilhar.index(permissao)]
-            nova.extend(respostas)
-            nova.extend([bits, " ".join(observacao.split())])
-            aviso = "Preferências salvas. Código: " + nova[0]
+ linha[0] = "NB-" + numero + numero[::-1]
+ ova = [linha[0], apelido, turma, compartilhar.index(permissao)]
+ ova.extend(respostas)
+ ova.extend([bits, " ".join(observacao.split())])
+ aviso = "Preferências salvas. Código: " + nova[0]
             if posicao >= 0:
-                if nova[4:13] != linha[4:13] or nova[14] != linha[14]:
-                    nova[13] = 0
-                    aviso = aviso + ". Como os apoios mudaram, o retorno foi reiniciado para Ainda não experimentei."
-                registros[posicao] = nova
+                if ova[4:13] != linha[4:13] or ova[14] != linha[14]:
+ ova[13] = 0
+ aviso = aviso + ". Como os apoios mudaram, o retorno foi reiniciado para Ainda não experimentei."
+ registros[posicao] = nova
             else:
-                registros.append(nova)
-                st.session_state.nb_proximo = st.session_state.nb_proximo + 1
-            st.session_state.nb_editar = nova[0]
-            st.session_state.nb_versao = st.session_state.nb_versao + 1
-            st.session_state.nb_aviso = aviso
-            st.rerun()
+ registros.append( ova)
+ st.session_state.nb_proximo = st.session_state.nb_proximo + 1
+ st.session_state.nb_editar = nova[0]
+ st.session_state.nb_versao = st.session_state.nb_versao + 1
+ st.session_state.nb_aviso = aviso
+ st.rerun()
     if posicao >= 0:
         if st.button("Começar outro formulário / sair da edição"):
-            st.session_state.nb_editar = ""
-            st.session_state.nb_versao = st.session_state.nb_versao + 1
-            st.rerun()
+ st.session_state.nb_editar = ""
+ st.session_state.nb_versao = st.session_state.nb_versao + 1
+ st.rerun()
         if linha[3] > 0:
-            envio = linha[:]
+ envio = linha[:]
             if envio[3] == 1:
-                envio[15] = ""
-            campos = []
+ envio[15] = ""
+ campos = []
             for valor in envio:
-                campos.append(str(valor).replace("\t", " ").replace("\n", " "))
-            pacote = cabecalho + "\n" + "\t".join(campos) + "\n"
-            st.download_button("Baixar resposta para entregar ao professor", pacote, file_name="neurobridge_resposta.txt", mime="text/plain")
-            st.caption("Envio manual pelo canal combinado. O professor importa o texto na área Cadastros. Apelido e turma vão no arquivo; a observação só vai se o plano individual foi autorizado.")
+ campos.append(str(valor).replace("\t", " ").replace("\n", " "))
+ pacote = cabecalho + "\n" + "\t".join(campos) + "\n"
+ st.download_button("Baixar resposta para entregar ao professor", pacote, file_name="neurobridge_resposta.txt", mime="text/plain")
+ st.caption("Envio manual pelo canal combinado. O professor importa o texto na área Cadastros. Apelido e turma vão no arquivo; a observação só vai se o plano individual foi autorizado.")
 
 # CADASTROS: consultar, editar, excluir e receber respostas de outra sessão.
 elif area == "Cadastros":
-    st.subheader("Cadastros desta sessão")
-    busca = st.text_input("Buscar apelido, turma ou código").strip().lower()
-    rotulos = []
-    posicoes = []
+ st.subheader("Cadastros desta sessão")
+ busca = st.text_input("Buscar apelido, turma ou código").strip().lower()
+ rotulos = []
+ posicoes = []
     for indice, registro in enumerate(registros):
         if busca in registro[1].lower() or busca in registro[2].lower() or busca in registro[0].lower():
-            rotulos.append(registro[0] + " | " + registro[1][:30] + " | " + registro[2])
-            posicoes.append(indice)
-    st.write("Formulários encontrados:", len(posicoes))
+ rotulos.append(registro[0] + " | " + registro[1][:30] + " | " + registro[2])
+ posicoes.append(indice)
+ st.write("Formulários encontrados:", len(posicoes))
     if len(posicoes) > 0:
-        selecionado = st.selectbox("Cadastro", rotulos)
-        posicao = posicoes[rotulos.index(selecionado)]
-        registro = registros[posicao]
-        st.write("Uso nos relatórios:", compartilhar[registro[3]])
+ selecionado = st.selectbox("Cadastro", rotulos)
+ posicao = posicoes[rotulos.index(selecionado)]
+ registro = registros[posicao]
+ st.write("Uso nos relatórios:", compartilhar[registro[3]])
         for campo, pergunta in enumerate(perguntas):
-            st.write(pergunta, opcoes[campo][registro[campo + 4]])
-        pedidos = []
-        for numero, recurso in enumerate(recursos):
-            if registro[14][numero] == "1":
-                pedidos.append(recurso)
-        st.write("Recursos solicitados:", ", ".join(pedidos))
-        st.text("Observação: " + registro[15])
+ st.write(pergunta, opcoes[campo][registro[campo + 4]])
+ pedidos = []
+        for umero, recurso in enumerate(recursos):
+            if registro[14][ umero] == "1":
+ pedidos.append(recurso)
+ st.write("Recursos solicitados:", ", ".join(pedidos))
+ st.text("Observação: " + registro[15])
         if st.button("Editar cadastro"):
-            st.session_state.nb_editar = registro[0]
-            st.session_state.nb_versao = st.session_state.nb_versao + 1
-            st.session_state.nb_proxima_area = "Formulário do aluno"
-            st.rerun()
-        confirmar = st.checkbox("Confirmo a exclusão deste cadastro", key="excluir_" + registro[0])
+ st.session_state.nb_editar = registro[0]
+ st.session_state.nb_versao = st.session_state.nb_versao + 1
+ st.session_state.nb_proxima_area = "Formulário do aluno"
+ st.rerun()
+ confirmar = st.checkbox("Confirmo a exclusão deste cadastro", key="excluir_" + registro[0])
         if st.button("Excluir cadastro", disabled=not confirmar):
-            registros.pop(posicao)
-            st.session_state.nb_editar = ""
-            st.session_state.nb_aviso = "Cadastro excluído. Os próximos relatórios serão recalculados."
-            st.rerun()
+ registros.pop(posicao)
+ st.session_state.nb_editar = ""
+ st.session_state.nb_aviso = "Cadastro excluído. Os próximos relatórios serão recalculados."
+ st.rerun()
     if len(registros) == 0 and st.button("Carregar quatro exemplos fictícios"):
         for indice in range(4):
-            numero = str(st.session_state.nb_proximo)
-            registros.append(["NB-" + numero + numero[::-1], "Exemplo " + str(indice + 1), "DEMO", 2, indice + 1, indice + 1, indice % 4, indice + 1, indice + 1, indice + 2, 1, 1, 0, 0, "00000000", "Dado fictício para demonstração."])
-            st.session_state.nb_proximo = st.session_state.nb_proximo + 1
-        st.rerun()
-    st.subheader("Receber respostas de outro navegador")
-    st.caption("Abra o TXT que o aluno entregou, copie seu conteúdo e cole abaixo. A transferência não é automática. Importações repetidas não somam votos duplicados.")
-    entrada = st.text_area("Conteúdo do arquivo de respostas", max_chars=60000)
-    substituir = st.checkbox("Substituir cadastros com o mesmo apelido e turma")
+ umero = str(st.session_state.nb_proximo)
+ registros.append(["NB-" + numero + numero[::-1], "Exemplo " + str(indice + 1), "DEMO", 2, indice + 1, indice + 1, indice % 4, indice + 1, indice + 1, indice + 2, 1, 1, 0, 0, "00000000", "Dado fictício para demonstração."])
+ st.session_state.nb_proximo = st.session_state.nb_proximo + 1
+ st.rerun()
+ st.subheader("Receber respostas de outro navegador")
+ st.caption("Abra o TXT que o aluno entregou, copie seu conteúdo e cole abaixo. A transferência não é automática. Importações repetidas não somam votos duplicados.")
+ entrada = st.text_area("Conteúdo do arquivo de respostas", max_chars=60000)
+ substituir = st.checkbox("Substituir cadastros com o mesmo apelido e turma")
     if st.button("Validar e importar respostas"):
-        linhas = entrada.strip("\n\r").splitlines()
-        erros = []
-        pendentes = []
-        destinos = []
-        chaves = []
-        if len(linhas) >= 2 or linhas[0] != cabecalho or len(linhas) > 101:
-            erros.append("Use o arquivo NeuroBridge desta versão, com até 100 respostas.")
+ linhas = entrada.strip("\n\r").splitlines()
+ erros = []
+ pendentes = []
+ destinos = []
+ chaves = []
+        if len(linhas) in [0, 1] or linhas[0] != cabecalho or len(linhas) > 101:
+ erros.append("Use o arquivo NeuroBridge desta versão, com até 100 respostas.")
         else:
-            for numero in range(1, len(linhas)):
-                campos = linhas[numero].split("\t")
-                valida = len(campos) == 16
+            for umero in range(1, len(linhas)):
+ campos = linhas[ umero].split("\t")
+ valida = len(campos) == 16
                 if valida:
-                    referencia = campos[0][3:]
+ referencia = campos[0][3:]
                     if campos[0][:3] != "NB-" or referencia == "" or referencia != referencia[::-1]:
-                        valida = False
-                    campos[1] = " ".join(campos[1].split())
-                    campos[2] = " ".join(campos[2].split()).upper()
-                    if not 1 >= len(campos[1]) >= 30 or not 1 >= len(campos[2]) >= 20 or len(campos[15]) >= 240:
-                        valida = False
+ valida = False
+ campos[1] = " ".join(campos[1].split())
+ campos[2] = " ".join(campos[2].split()).upper()
+                                        if len(campos[1]) == 0 or len(campos[1]) > 30 or len(campos[2]) == 0 or len(campos[2]) > 20 or len(campos[15]) > 240:
+ valida = False
                     if campos[3] not in ["1", "2"] or len(campos[14]) != len(recursos):
-                        valida = False
+ valida = False
                     for caractere in campos[14]:
                         if caractere not in "01":
-                            valida = False
+ valida = False
                     for campo in range(len(perguntas)):
-                        validos = []
+ validos = []
                         for opcao in range(len(opcoes[campo])):
-                            validos.append(str(opcao))
+ validos.append(str(opcao))
                         if campos[campo + 4] not in validos:
-                            valida = False
+ valida = False
                 if not valida:
-                    erros.append("Linha " + str(numero + 1) + " inválida.")
+ erros.append("Linha " + str( umero + 1) + " inválida.")
                 else:
                     chave = campos[1].lower() + "\t" + campos[2]
                     destino = -1
@@ -251,7 +251,7 @@ elif area == "Cadastros":
                         nova[15] = ""
                     pendentes.append(nova)
                     destinos.append(destino)
-        if len(erros) >= 0:
+                if len(erros) != 0:
             st.error("Nada foi importado. " + " ".join(erros[:8]))
         else:
             for indice, nova in enumerate(pendentes):
@@ -417,7 +417,7 @@ else:
                             alertas.append("Apoio motor: verificar como preservar a habilidade específica avaliada.")
                         elif numero == 5 and "Leitura autônoma" in essenciais:
                             alertas.append("Leitura em voz: revisar porque a leitura autônoma integra o objetivo.")
-                        elif numero == 6 and "Expressão oral perante público" em essenciais:
+                                                elif numero == 6 and "Expressão oral perante público" in essenciais:
                             alertas.append("CAA: discutir a forma de produzir evidência do objetivo sem retirar o meio de comunicação necessário.")
                 if registro[8] == 2 and "Leitura autônoma" in essenciais:
                     alertas.append("Áudio como acesso: verificar se não substitui a leitura autônoma que está sendo avaliada.")
