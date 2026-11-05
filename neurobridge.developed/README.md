@@ -11,7 +11,7 @@ python -m pip install -r neurobridge.developed/requirements.txt
 python -m streamlit run neurobridge.developed/app.py
 ```
 
-Abra o endereço local mostrado no terminal, normalmente `http://localhost:8501`. Se seu sistema usa `python3`, substitua `python` nos dois comandos.
+Abra o endereço local mostrado no terminal, normalmente `http://localhost:8501`. Se seu sistema usa `python3`, substitua `python` os dois comandos.
 
 ## Começar
 
@@ -21,7 +21,7 @@ Abra o endereço local mostrado no terminal, normalmente `http://localhost:8501`
 
 O aluno pode baixar sua resposta em TXT e entregá-la pelo canal combinado. Em outro navegador, o professor abre o arquivo, copia o texto e usa **Cadastros → Receber respostas de outro navegador**. A transferência é manual. O professor também pode baixar a proposta da aula e o plano individual.
 
-Leia o [README (3) — escopo refinado, funcionamento e limites](README%20%283%29.md).
+Leia o [README (3) — escopo refinado, funcionamento e limites](README%283%29.md).
 
 ## Organização
 
