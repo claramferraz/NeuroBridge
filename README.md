@@ -1,47 +1,72 @@
 # NeuroBridge
 
-Relatório de Desenvolvimento do Projeto: Mediador de Inteligência Artificial Neuroinclusivo (NeuroBrigde)
+Protótipo acadêmico para apoiar estudantes a expressarem suas preferências de aprendizagem e ajudar professores a preparar aulas, atividades e avaliações mais acessíveis.
 
-# 1. Introdução
+## Princípio do projeto
 
-O projeto NeuroBrigde tem como objetivo tornar o uso de inteligências artificiais mais acessível para pessoas com diferentes necessidades cognitivas, especialmente pessoas com TDAH, autismo e dislexia.
+O estudante escolhe os apoios que prefere. O NeuroBridge organiza essas escolhas e sugere possibilidades ao professor. Não coleta diagnóstico, não classifica estudantes e não presume que pessoas com a mesma condição aprendam do mesmo jeito.
 
-Para isso, foi desenvolvido um protótipo em Python que personaliza prompts de acordo com as preferências e necessidades de cada usuário, orientando a IA a produzir respostas mais acessíveis.
+## O que o protótipo faz
 
-# 2. Desenvolvimento e funcionalidades
+- Registra preferências de formato, ritmo, explicação, atividade, convivência e avaliação.
+- Permite criar, consultar, editar e excluir perfis de preferência (CRUD).
+- Ajuda o professor a consultar as escolhas e montar sugestões para uma aula ou avaliação.
+- Cria um prompt que pode ser revisado e copiado para uma IA externa.
+- Não se conecta a uma IA nem altera notas ou avaliações automaticamente.
 
-O protótipo foi desenvolvido utilizando Python e Streamlit, permitindo que o usuário interaja com uma interface gráfica simples.
+## Preferências registradas
 
-Foram implementadas as seguintes funcionalidades:
-Seleção de perfis: TDAH, autismo, dislexia ou geral, com possibilidade de escolher mais de um.
-Limite de palavras: permite definir o tamanho máximo da resposta.
-Escolha de tom: acolhedor, neutro ou formal.
-Campo de solicitação: permite escrever o que deseja pedir à IA.
-Geração de prompts: combina automaticamente o pedido com instruções específicas de acessibilidade.
+O formulário permite combinar opções como texto, números, símbolos, imagens, exemplo primeiro, explicação por etapas, blocos curtos, atividade individual ou em grupo e questão por vez. O estudante também pode escolher "depende da atividade" ou não responder.
 
-Cada perfil possui regras próprias. Para TDAH, são priorizados passos curtos e respostas diretas. Para autismo, utiliza-se linguagem literal e organizada. Para dislexia, são priorizadas frases simples, parágrafos curtos e espaçamento adequado.
+## Executar localmente
 
-Também foram desenvolvidos recursos de histórico, recuperação do último prompt, salvamento em arquivo de texto e atualização das preferências.
+```bash
+python -m pip install -r requirements.txt
+python -m streamlit run app_preferencias.py
+```
 
-# 3. Funcionamento
+Os dados de demonstração ficam em `dados_neurobridge.json`, no computador em que o aplicativo é executado. O protótipo não tem autenticação, hospedagem segura ou controle de acesso; use apenas dados fictícios. Não publique nem compartilhe respostas reais de estudantes com esta versão.
 
-O usuário seleciona suas preferências, descreve o que precisa e clica em "Gerar prompt". O sistema organiza essas informações em um comando personalizado, que pode ser copiado e enviado para uma ferramenta de inteligência artificial externa.
+## Organização
 
-# 4. Tecnologias utilizadas
+- `app_preferencias.py`: formulário e telas Streamlit.
+- `neurobridge.py`: regras, sugestões e operações CRUD.
+- `tests/test_neurobridge.py`: testes da lógica e do CRUD.
 
-Python: desenvolvimento da lógica do sistema.
+## Próximos passos
 
-Streamlit: construção da interface gráfica.
+1. Validar as perguntas e sugestões com o grupo.
+2. Testar o fluxo com dados fictícios.
+3. Revisar segurança, acesso e armazenamento antes de qualquer uso real.
+4. Avaliar integração com IA somente após definir o que será enviado e como o estudante controlará esse envio.
 
-Dataclasses e Enum: organização das preferências e dos perfis de acessibilidade.
+Este repositório descreve e demonstra um protótipo acadêmico. Não é ferramenta de diagnóstico, tratamento ou substituto das decisões do estudante, do professor ou da instituição.
 
-# 5. Limitações e próximos passos
+## Continuidade do trabalho em grupo
 
-Atualmente, o protótipo não possui conexão direta com uma inteligência artificial. É necessário copiar o prompt gerado e enviá-lo manualmente para outra ferramenta.
-Como próximos passos, pretende-se implementar essa conexão, aprimorar a interface e ampliar as opções de personalização, tornando a experiência mais completa e adaptada às necessidades individuais.
+O projeto foi iniciado por Clara Ferraz. Esta evolução adiciona um formulário de preferências e sugestões para o professor. O gerador original (`app.py` e `mediador_neuroinclusivo.py`) é mantido como etapa anterior; a nova demonstração é executada por `app_preferencias.py`. Os perfis clínicos da versão anterior não são usados no novo formulário.
 
-# 6. Conclusão
+## Como a lógica foi programada
 
-Nesta etapa, foi desenvolvido um protótipo funcional que transforma solicitações comuns em prompts personalizados, considerando diferentes necessidades cognitivas e de aprendizagem.
+1. Strings guardam as opções e os textos de apoio.
+2. Listas armazenam perfis e escolhas; uma matriz guarda preferência e contagem.
+3. `while` percorre escolhas; `for` e `range` percorrem a matriz.
+4. Condicionais `if` combinam sugestões, pois várias preferências podem coexistir.
+5. Funções separam criar, consultar, atualizar e excluir; JSON mantém a demonstração entre execuções.
 
-O resultado representa o primeiro passo na construção do NeuroBrigde, uma ferramenta que busca tornar a interação com inteligências artificiais mais acessível, clara e inclusiva.
+As sugestões são regras explícitas, não inteligência artificial. As contagens se referem aos perfis selecionados e não medem capacidade, diagnóstico ou eficiência de aprendizagem. Preferências diferentes podem exigir alternativas para o professor escolher.
+
+## Avaliações e privacidade
+
+Os apoios se referem à apresentação dos enunciados e à organização da atividade. O professor decide o conteúdo, os critérios, a dificuldade e as adaptações institucionais. O formulário não substitui avaliação pedagógica nem produz laudos.
+
+Antes de responder, a interface explica onde os dados ficam e quem pode acessá-los nesta demonstração. É possível consultar, editar e excluir registros. Apelidos e observações livres não entram no prompt. Não há envio automático a serviços externos. O arquivo local de respostas deve ficar fora do Git.
+
+Ainda faltam autenticação, permissões por estudante e professor, gestão de turmas, política de retenção e revisão institucional para uso real. Um aviso ou termo não torna o protótipo adequado à LGPD por si só. Não use esta versão para coletar respostas reais nem a disponibilize como formulário público.
+
+## Verificação
+
+```bash
+python -m unittest discover -s tests -v
+python -m py_compile app_preferencias.py neurobridge.py
+```
