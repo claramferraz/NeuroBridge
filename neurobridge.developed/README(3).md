@@ -16,7 +16,7 @@ Esta versão não pergunta o que a pessoa "é", com o que se identifica ou qual 
 | 2 | Formulário no terminal, CRUD e relatórios pedagógicos. Incluía perfil declarado opcional. | [README (2)](../README%20%282%29.md) e [neurobridge_basico](../neurobridge_basico/). |
 | 3 | Formulário clicável sem diagnósticos, percentuais, proposta de tempo, transferência manual de respostas e planos de avaliação com critérios comuns. | Esta pasta `neurobridge.developed`. |
 
-A pasta `neurobridge_basico` foi preservada. A antiga estrutura de pastas `entrada`, `listas`, `matrizes`, `strings` e `crud` não faz parte da nova aplicação. Os conceitos de Python são instrumentos da programação, não conteúdos oferecidos ao estudante.
+A pasta `neurobridge_basico` foi preservada. A antiga estrutura de pastas `entrada`, `listas`, `matrizes`, `strings` e `crud` ão faz parte da nova aplicação. Os conceitos de Python são instrumentos da programação, não conteúdos oferecidos ao estudante.
 
 ## 3. O que o estudante escolhe
 
